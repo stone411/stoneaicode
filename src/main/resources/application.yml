@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: stone-aicode-backend
+  # session 配置
+  session:
+    store-type: redis
+    # session 30 天过期
+    timeout: 2592000
+  # redis
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
+      password:
+      ttl: 3600 # 缓存过期时间（秒）
+  profiles:
+    active: local
+server:
+  port: 8123
+  servlet:
+    context-path: /api
+    # cookie 30 天过期
+    session:
+      cookie:
+        max-age: 2592000
+# 本地文件存储（替代对象存储，用于截图、架构图等图片）
+local-file:
+  # 文件存储根目录
+  root-dir: ${user.dir}/tmp/local_files
+  # 文件访问地址前缀，端口与 context-path 需和 server 配置保持一致
+  access-host: http://localhost:8123/api/files
+# springdoc-openapi
+springdoc:
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: com.stone.aicode.controller
+# knife4j
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+# 监控
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,prometheus
+  endpoint:
+    health:
+      show-details: always
